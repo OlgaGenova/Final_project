@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+
+    <form action="/register" method="post" autocomplete="off">
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="Age" placeholder="Age" type="number" min="18" required>
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="Weight" placeholder="Weight(kg)" type="number" min="25" required>
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="Height" placeholder="Height(cm)" type="number" min="130" required>
+        </div>
+        <div class="mb-3">
+            <div>
+                <label>Male</label>
+                <input type="radio" name="gender" value="Male" required/>           
+            </div>
+            <div>
+                <label>Female</label>
+                <input type="radio" name="gender" value="Female"/>           
+            </div>
+
+        </div>
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Username" type="text" required>
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="password" placeholder="Password(8 char min)" type="password" minlength="8" required>
+        </div>
+        <div class="mb-3">
+            <input class="form-control mx-auto w-auto" name="confirmation" placeholder="Password (again)" type="password">
+        </div>
+        <button class="btn btn-primary" type="submit">Registjshdjsaher</button>
+    </form>
+
+{% endblock %}
