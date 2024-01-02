@@ -18,10 +18,12 @@ app.jinja_env.filters["usd"] = usd
 # Configure session to use filesystem (instead of signed cookies)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+
 Session(app)
 
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///finance.db")
+db = SQL("sqlite:///calories.db")
 
 
 @app.after_request
@@ -37,43 +39,61 @@ def after_request(response):
 @login_required
 def index():
 
+    transactions = db.execute("SELECT product, SUM(grams), cal_100gr FROM transactions WHERE userid = ? GROUP BY product", session["user_id"])
+    calorie_intake = db.execute("SELECT calorie_intake FROM users WHERE id=?", session["user_id"])
+    remaining_calorie_balance = db.execute("SELECT remaining_calorie_balance FROM users WHERE id = ?", session["user_id"])
+    print("transactions=", transactions, "    calorie_intake=",calorie_intake, "    remaining_calorie_balance=", remaining_calorie_balance )
 
-    transactions = db.execute("SELECT symbol, SUM(shares), price FROM transactions WHERE userid = ? GROUP BY symbol", session["user_id"])
-        #transactions [{'symbol': 'a', 'SUM(shares)': 6, 'price': 127.2}, {'symbol': 'b', 'SUM(shares)': 1, 'price': 28.5}]
-    balance = db.execute("SELECT cash FROM users WHERE id=?", session["user_id"])
-        #balance [{'cash': 6452.07}]
 
     """Show portfolio of stocks"""
-    return render_template("index.html", transactions=transactions, balance=balance)
+    return render_template("index.html", transactions=transactions, calorie_intake=calorie_intake, remaining_calorie_balance=remaining_calorie_balance)
 
 
-@app.route("/buy", methods=["GET", "POST"])
+@app.route("/eat", methods=["GET", "POST"])
 @login_required
-def buy():
-    """Buy shares of stock"""
-    if request.method == "GET":
-        return render_template("buy.html")
+def eat():
+    """Eat calories"""
 
-    if lookup(request.form.get("symbol"))==None:
+    if request.method == "GET":
+        #q = request.args.get("q")
+        calories_get = db.execute("SELECT product, cal_100gr FROM calories ORDER BY product")
+        #if q:
+        #    calories_get = db.execute("SELECT * FROM calories WHERE product LIKE ?", "%" + q + "%")
+        #else:
+        #    calories_get = []
+        #print("calories_get = ", calories_get)
+        return render_template("eat.html", calories_get=calories_get)
+    
+    if request.form.get("product")==None:
         return apology("missing symbol", 400)
 
-    balance_old = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
-    balance_new = (balance_old[0]['cash']) - int(request.form.get("shares"))*(lookup(request.form.get("symbol"))["price"])
-    if balance_new < 0:
-        return apology("can't afford", 400)
-    db.execute("UPDATE users SET cash = ? WHERE id = ?", balance_new, session["user_id"])
-    date = datetime.datetime.now()
-    db.execute("INSERT INTO transactions (userid, symbol, shares, price, time) VALUES(?,?,?,?,?)", session["user_id"],request.form.get("symbol"), int(request.form.get("shares")), lookup(request.form.get("symbol"))["price"], date)
+    balance_old = db.execute("SELECT remaining_calorie_balance FROM users WHERE id = ?", session["user_id"])
+    calories = db.execute("SELECT cal_100gr FROM calories WHERE product = ?", request.form. get("product"))
+    print("cal_gr - ", calories)
+    print("balance_old", balance_old)
+    
+    print("type_request.form.get_", type(request.form.get("grams")))
+    print("type_calories0_cal_100gr_",type(calories[0]['cal_100gr']))
 
-    flash("Bought!")
+    balance_new = (balance_old[0]['remaining_calorie_balance']) - int(request.form.get("grams"))*(calories[0]['cal_100gr'])/100
+    print("balance_new", balance_new)
+
+    if balance_new < 0:
+        return apology("Too much!", 400)
+    db.execute("UPDATE users SET remaining_calorie_balance = ? WHERE id = ?", balance_new, session["user_id"])
+    date = datetime.datetime.now()
+    db.execute("INSERT INTO transactions (userid, product, grams, cal_100gr, time) VALUES(?,?,?,?,?)", session["user_id"],request.form.get("product"), int(request.form.get("grams")), calories[0]['cal_100gr'], date)
+
+    flash("Done!")
     return redirect("/")
+
 
 @app.route("/history")
 @login_required
 def history():
 
-    """Show history of transactions"""
-    transactions = db.execute("SELECT symbol, shares, price, time FROM transactions WHERE userid = ?", session["user_id"])
+    """Show history of eating"""
+    transactions = db.execute("SELECT product, grams, cal_100gr, time FROM transactions WHERE userid = ?", session["user_id"])
     return render_template("history.html", transactions=transactions)
 
 
@@ -124,21 +144,12 @@ def logout():
     return redirect("/")
 
 
-@app.route("/quote", methods=["GET", "POST"])
+@app.route("/food_calorie_chart")
 @login_required
-def quote():
-    """Get stock quote."""
-    if request.method == "GET":
-        return render_template("quote.html")
-
-    if lookup(request.form.get("symbol"))==None:
-        return apology("symbol is invalid", 400)
-
-    symboll_name=lookup(request.form.get("symbol"))["name"]
-    symboll_price=lookup(request.form.get("symbol"))["price"]
-    symboll_symbol=lookup(request.form.get("symbol"))["symbol"]
-
-    return render_template("quoted.html", symboll_name=symboll_name, symboll_price=symboll_price, symboll_symbol=symboll_symbol)
+def food_calorie_chart():
+    
+    calories = db.execute("SELECT * FROM calories GROUP BY product")
+    return render_template("food_calorie_chart.html", calories=calories)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -171,32 +182,42 @@ def register():
             else:
                 Calorie_Intake = int(447.6 + 9.2*(int(request.form.get("Weight"))) + 3.1*(int(request.form.get("Height"))) - 4.3*int((request.form.get("Age"))))
                 print("Calorie_Intake_Female", Calorie_Intake)
-            db.execute("INSERT INTO users (username, hash, calorie_intake) VALUES(?, ?, ?)", request.form.get("username"), hash, Calorie_Intake)
+            db.execute("INSERT INTO users (username, hash, calorie_intake, remaining_calorie_balance) VALUES(?, ?, ?, ?)", request.form.get("username"), hash, Calorie_Intake, Calorie_Intake)
 
             return redirect("/")
 
     else:
         """Register user"""
         return render_template("register.html")
+    
 
-@app.route("/sell", methods=["GET", "POST"])
+@app.route("/your_menu", methods=["GET", "POST"])
 @login_required
-def sell():
+def your_menu():
     """Sell shares of stock"""
     if request.method == "GET":
-        transactions = db.execute("SELECT symbol, SUM(shares), price FROM transactions WHERE userid = ? GROUP BY symbol", session["user_id"])
-        return render_template("sell.html", transactions=transactions)
+        return render_template("your_menu.html")
 
-    tr=db.execute("SELECT SUM(shares) FROM transactions WHERE userid = ? AND symbol=?", session["user_id"], request.form.get("symbol"))
-    if tr[0]["SUM(shares)"]<int(request.form.get("shares")):
-        return apology("Too many shares", 400)
-
-    balance_old = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
-    balance_new = balance_old[0]['cash'] + int(request.form.get("shares"))*(lookup(request.form.get("symbol"))["price"])
-    db.execute("UPDATE users SET cash = ? WHERE id = ?", balance_new, session["user_id"])
-    date = datetime.datetime.now()
-    db.execute("INSERT INTO transactions (userid, symbol, shares, price, time) VALUES(?,?,?,?,?)", session["user_id"],request.form.get("symbol"), -1*(int(request.form.get("shares"))), lookup(request.form.get("symbol"))["price"], date)
-
-    flash("Sold!")
+    db.execute("INSERT INTO calories (product, cal_100gr) VALUES(?,?)", request.form.get("product"), int(request.form.get("cal_100gr")))
+    flash("Added!")
 
     return redirect("/")
+
+@app.route("/contacts", methods=["GET", "POST"])
+@login_required
+def contacts():
+    """Sell shares of stock"""
+    if request.method == "GET":
+        return render_template("contacts.html")
+    
+
+    flash("Thanks!")
+
+    return redirect("/")
+
+
+    
+#cal_gr -  [{'cal_100gr': None}]
+#balance_old [{'remaining_calorie_balance': 30.39}]
+#type_request.form.get_ <class 'str'>
+#type_calories0_cal_100gr_ <class 'NoneType'>

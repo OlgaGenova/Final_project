@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    History
+    Food_Calorie_Chart
 {% endblock %}
 
 {% block main %}
@@ -10,18 +10,14 @@
             <thead>
                 <tr>
                     <th scope="col">Product</th>
-                    <th scope="col">Grams</th>
-                    <th scope="col">Cal_100gr</th>
-                    <th scope="col">Time</th>
+                    <th scope="col">Cals per 100gr</th>
                 </tr>
             </thead>
             <tbody>
-                {% for transaction in transactions %}
+                {% for calorie in calories %}
                     <tr>
-                        <td>{{ transaction["product"] }}</td>
-                        <td>{{ transaction["grams"] }}</td>
-                        <td>{{ transaction["cal_100gr"] }}</td>
-                        <td>{{ transaction["time"] }}</td>
+                        <td>{{ calorie["product"] }}</td>
+                        <td>{{ calorie["cal_100gr"] }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

@@ -9,20 +9,20 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">Symbol</th>
-                    <th scope="col">Shares</th>
-                    <th scope="col">Price</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Grams</th>
+                    <th scope="col">Cal_100gr</th>
                     <th scope="col">Total</th>
                 </tr>
             </thead>
             <tbody>
                 {% for transaction in transactions %}
-                    {%   if transaction["SUM(shares)"] > 0 %}
+                    {%   if transaction["SUM(grams)"] > 0 %}
                     <tr>
-                        <td>{{ transaction["symbol"] }}</td>
-                        <td>{{ transaction["SUM(shares)"] }}</td>
-                        <td>${{ transaction["price"] }}</td>
-                        <td>${{ transaction["price"] * transaction["SUM(shares)"] }}</td>
+                        <td>{{ transaction["product"] }}</td>
+                        <td>{{ transaction["SUM(grams)"] }}</td>
+                        <td>{{ transaction["cal_100gr"] }}</td>
+                        <td>{{ transaction["cal_100gr"] * transaction["SUM(grams)"]/100 }}</td>
                     </tr>
                     {%   endif %}
                 {% endfor %}
@@ -31,14 +31,14 @@
                 <tr>
                     <td></td>
                     <td></td>
-                    <th scope="col">Cash</th>
-                    <th scope="col">${{ balance[0]['cash'] }}</th>
+                    <th scope="col">Your daily calorie intake</th>
+                    <th scope="col">{{ calorie_intake[0]['calorie_intake'] }}</th>
                 </tr>
                 <tr>
                     <td></td>
                     <td></td>
-                    <th scope="col">Total</th>
-                    <th scope="col">$10,000.00</th>
+                    <th scope="col">Remaining calorie balance</th>
+                    <th scope="col">{{ remaining_calorie_balance[0]["remaining_calorie_balance"] }}</th>
                 </tr>
             </tfoot>
         </table>

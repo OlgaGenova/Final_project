@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
 <html lang="en">
-
     <head>
 
         <meta charset="utf-8">
@@ -16,25 +15,39 @@
 
         <link href="/static/styles.css" rel="stylesheet">
 
-        <title>C$50 Finance: {% block title %}{% endblock %}</title>
+        <title>Diet & Weight: {% block title %}{% endblock %}</title>
 
     </head>
 
     <body>
 
+     <!--   .bg-img
+{
+    background-image: url('https://as2.ftcdn.net/v2/jpg/01/81/69/23/1000_F_181692338_0dOJqtYR7Myhl5zF1yPjmXC9EorD9sIz.jpg');
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background-size: cover;
+    opacity: 0.0;
+
+}
+        <div class="bg-img"></div> -->
+
         <nav class="bg-light border navbar navbar-expand-md navbar-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/"><span class="blue">C</span><span class="red">$</span><span class="yellow">5</span><span class="green">0</span> <span class="red">Finance</span></a>
+                <a class="navbar-brand" href="/"><span class="header_diet">Diet & Weight</span></a>
                 <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#navbar" data-bs-toggle="collapse" type="button">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbar">
                     {% if session["user_id"] %}
                         <ul class="navbar-nav me-auto mt-2">
-                            <li class="nav-item"><a class="nav-link" href="/quote">Quote</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/buy">Buy</a></li>
-                            <li class="nav-item"><a class="nav-link" href="/sell">Sell</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/food_calorie_chart">Food Calorie Chart</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/eat">Eat some calories</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/your_menu">Create Your Menu</a></li>
                             <li class="nav-item"><a class="nav-link" href="/history">History</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/contacts">Feedback</a></li>
+
                         </ul>
                         <ul class="navbar-nav ms-auto mt-2">
                             <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li>
@@ -58,6 +71,7 @@
         {% endif %}
 
         <main class="container-fluid py-5 text-center">
+
             {% block main %}{% endblock %}
         </main>
 

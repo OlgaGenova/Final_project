@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Your_menu
+{% endblock %}
+
+{% block main %}
+    <form action="/your_menu" method="post">
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="product" placeholder="Product" type="text" required>
+        </div>
+        <div class="mb-3">
+            <input autocomplete="off" autofocus class="form-control mx-auto w-auto"  min="1" name="cal_100gr" placeholder="cals per 100gr " type="number" required>
+        </div>
+        <button class="btn btn-primary" type="submit">Add_item</button>
+    </form>
+
+{% endblock %}
+
