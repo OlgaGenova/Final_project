@@ -213,7 +213,15 @@ def contacts():
     return redirect("/")
 
 
+@app.route("/reset", methods=["POST"])
+@login_required
+def reset():
+    "Reset your eating, history of eating for start from a scratch(a new day)"
 
+    db.execute("DELETE FROM transactions WHERE userid = ?", session["user_id"])
+    db.execute("UPDATE users SET remaining_calorie_balance = calorie_intake WHERE id=?", session["user_id"])
+                                                                                                 
+    return redirect("/")
     
 #cal_gr -  [{'cal_100gr': None}]
 #balance_old [{'remaining_calorie_balance': 30.39}]
