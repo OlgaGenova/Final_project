@@ -206,14 +206,12 @@ def your_menu():
 @app.route("/contacts", methods=["GET", "POST"])
 @login_required
 def contacts():
-    """Sell shares of stock"""
+    """If the user want to give the feedback"""
     if request.method == "GET":
         return render_template("contacts.html")
-    
-
     flash("Thanks!")
-
     return redirect("/")
+
 
 
     
