@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block main %}
-<div class = "img_for_register">
 
     <div class="container py-5 text-center">
         <h2>Welcome to Daily Calorie Intake Calculator!</h2>
@@ -16,7 +15,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xl-5 col-md-8">
-                <form action="/register" method="post" class="bg-white rounded shadow-5-strong p-5" autocomplete="off">
+                <form action="/register" method="post" class="bg-white rounded shadow-5-strong p-4" autocomplete="off">
                     <div class="mb-3">
                         <input class="form-control mx-auto w-auto" name="Age" placeholder="Age" type="number" min="18" required>
                     </div>
@@ -49,7 +48,6 @@
             </div>
         </div>
     </div>
-</div>
 
 {% endblock %}
 
