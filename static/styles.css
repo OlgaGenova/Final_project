@@ -9,22 +9,3 @@ nav .navbar-brand .header_diet
 {
     color: #537fbe;
 }
-
-
-body {
-
-    background: url('https://as2.ftcdn.net/v2/jpg/01/81/69/23/1000_F_181692338_0dOJqtYR7Myhl5zF1yPjmXC9EorD9sIz.jpg');
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    background-size: cover;
-
-}
-
-.img_for_register {
-    background: url('https://as2.ftcdn.net/v2/jpg/01/81/69/23/1000_F_181692338_0dOJqtYR7Myhl5zF1yPjmXC9EorD9sIz.jpg');
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    background-size: cover;
-}
