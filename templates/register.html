@@ -6,43 +6,48 @@
 
 {% block main %}
 
-<main class="container py-5 text-center">
-
-    <h2>Welcome to Daily Calorie Intake Calculator!</h2>
-    <hr>
-    <h3>Feel free to enter your information below in the Daily Calorie Intake calculator to receive your personal current daily calorie intake, and what your body needs to fuel itself during the day with your routine!</h3>
-    <hr>
-        <form action="/register" method="post" autocomplete="off">
-            <div class="mb-3">
-                <input class="form-control mx-auto w-auto" name="Age" placeholder="Age" type="number" min="18" required>
+    <div class="container py-5 text-center">
+        <h2>Welcome to Daily Calorie Intake Calculator!</h2>
+        <hr>
+        <h3>Feel free to enter your information below in the Daily Calorie Intake calculator to receive your personal current daily calorie intake, and what your body needs to fuel itself during the day with your routine!</h3>
+        <hr>
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-5 col-md-8">
+                <form action="/register" method="post" class="bg-white rounded shadow-5-strong p-5" autocomplete="off">
+                    <div class="mb-3">
+                        <input class="form-control mx-auto w-auto" name="Age" placeholder="Age" type="number" min="18" required>
+                    </div>
+                    <div class="mb-3">
+                        <input class="form-control mx-auto w-auto" name="Weight" placeholder="Weight(kg)" type="number" min="25" required>
+                    </div>
+                    <div class="mb-3">
+                        <input class="form-control mx-auto w-auto" name="Height" placeholder="Height(cm)" type="number" min="130" required>
+                    </div>
+                    <div class="mb-3">
+                        <label>Male</label>
+                        <input type="radio" name="gender" value="Male" required/>           
+                    </div>
+                    <div class="mb-3">
+                        <label>Female</label>
+                        <input type="radio" name="gender" value="Female"/>           
+                    </div>
+                    <div class="mb-3">
+                        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Username" type="text" required>
+                    </div>
+                    <div class="mb-3">
+                        <input class="form-control mx-auto w-auto" name="password" placeholder="Password(8 char min)" type="password" minlength="8" required>
+                    </div>
+                    <div class="mb-3">
+                        <input class="form-control mx-auto w-auto" name="confirmation" placeholder="Password (again)" type="password">
+                    </div>
+                    <button class="btn btn-primary" type="submit">Register</button>
+                </form>
+                <!--<img src="/static/png-transparent-ribbon-drawing-tape-measures-ruler-measurement-stanley-tape-tailor-textile-yellow.png" alt="my_png"  width="350">-->
             </div>
-            <div class="mb-3">
-                <input class="form-control mx-auto w-auto" name="Weight" placeholder="Weight(kg)" type="number" min="25" required>
-            </div>
-            <div class="mb-3">
-                <input class="form-control mx-auto w-auto" name="Height" placeholder="Height(cm)" type="number" min="130" required>
-            </div>
-            <div class="mb-3">
-                <label>Male</label>
-                <input type="radio" name="gender" value="Male" required/>           
-            </div>
-            <div class="mb-3">
-                <label>Female</label>
-                <input type="radio" name="gender" value="Female"/>           
-            </div>
-            <div class="mb-3">
-                <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="username" placeholder="Username" type="text" required>
-            </div>
-            <div class="mb-3">
-                <input class="form-control mx-auto w-auto" name="password" placeholder="Password(8 char min)" type="password" minlength="8" required>
-            </div>
-            <div class="mb-3">
-                <input class="form-control mx-auto w-auto" name="confirmation" placeholder="Password (again)" type="password">
-            </div>
-            <button class="btn btn-primary" type="submit">Register</button>
-        </form>
-    <!--<img src="/static/png-transparent-ribbon-drawing-tape-measures-ruler-measurement-stanley-tape-tailor-textile-yellow.png" alt="my_png"  width="350">-->
-</main>
+        </div>
+    </div>
 
 {% endblock %}
 
