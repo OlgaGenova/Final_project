@@ -12,22 +12,26 @@
       alert('Thank you, ' + name + ", I'll call you!");
     }
   </script>
-  <form onsubmit="greet(); return false;">
-    <div class="form-group">
-      <label for="inputName">Name</label>
-      <input type="text" class="form-control mx-auto w-auto" id="inputName" placeholder="Your name" required>
+  <div class="row justify-content-center">
+    <div class="col-xl-5 col-md-8">
+      <form onsubmit="greet(); return false;" class="bg-white rounded shadow-5-strong p-4 border border-primary">
+        <div class="form-group">
+          <label for="inputName">Name</label>
+          <input type="text" class="form-control mx-auto w-auto" id="inputName" placeholder="Your name" required>
+        </div>
+        <div class="form-group">
+          <label for="inputEmail">Email</label>
+          <input type="text" class="form-control mx-auto w-auto" id="inputEmail" placeholder="Email" required>
+        </div>
+        <div class="form-group">
+          <label for="inputPhone">Phone</label>
+          <input type="text" class="form-control mx-auto w-auto" id="inputPhone" placeholder="Phone" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Send</button>
+        <button type="reset" class="btn btn-primary">Reset</button>
+      </form>
     </div>
-    <div class="form-group">
-      <label for="inputEmail">Email</label>
-      <input type="text" class="form-control mx-auto w-auto" id="inputEmail" placeholder="Email" required>
-    </div>
-    <div class="form-group">
-      <label for="inputPhone">Phone</label>
-      <input type="text" class="form-control mx-auto w-auto" id="inputPhone" placeholder="Phone" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Send</button>
-    <button type="reset" class="btn btn-primary">Reset</button>
-  </form>
+  </div>
 {% endblock %}
 
 
