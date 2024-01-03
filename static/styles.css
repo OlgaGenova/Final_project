@@ -20,3 +20,11 @@ body {
     background-size: cover;
 
 }
+
+.img_for_register {
+    background: url('herbs-and-vegetables-on-white-background.jpg');
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background-size: cover;
+}
