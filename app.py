@@ -40,31 +40,29 @@ def index():
     calorie_intake = db.execute("SELECT calorie_intake FROM users WHERE id=?", session["user_id"])
     remaining_calorie_balance = db.execute("SELECT remaining_calorie_balance FROM users WHERE id = ?", session["user_id"])
 
-
-    """Show portfolio of stocks"""
+    """Show how many calories the user has eaten and calories remained"""
     return render_template("index.html", transactions=transactions, calorie_intake=calorie_intake, remaining_calorie_balance=remaining_calorie_balance)
 
 
 @app.route("/eat", methods=["GET", "POST"])
 @login_required
 def eat():
-    """Eat calories"""
 
+    """Eat calories"""
     if request.method == "GET":
         calories_get = db.execute("SELECT product, cal_100gr FROM calories ORDER BY product")
         return render_template("eat.html", calories_get=calories_get)
     
     if request.form.get("product")==None:
-        return apology("missing symbol", 400)
+        return apology("missing product", 400)
 
     balance_old = db.execute("SELECT remaining_calorie_balance FROM users WHERE id = ?", session["user_id"])
     calories = db.execute("SELECT cal_100gr FROM calories WHERE product = ?", request.form. get("product"))
 
-
     balance_new = (balance_old[0]['remaining_calorie_balance']) - int(request.form.get("grams"))*(calories[0]['cal_100gr'])/100
 
     if balance_new < 0:
-        return apology("Too much!", 400)
+        return apology("Your daily calorie intake has been exceeded!", 400)
     db.execute("UPDATE users SET remaining_calorie_balance = ? WHERE id = ?", balance_new, session["user_id"])
     date = datetime.datetime.now()
     db.execute("INSERT INTO transactions (userid, product, grams, cal_100gr, time) VALUES(?,?,?,?,?)", session["user_id"],request.form.get("product"), int(request.form.get("grams")), calories[0]['cal_100gr'], date)
