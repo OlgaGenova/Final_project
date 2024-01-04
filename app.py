@@ -42,7 +42,6 @@ def index():
     transactions = db.execute("SELECT product, SUM(grams), cal_100gr FROM transactions WHERE userid = ? GROUP BY product", session["user_id"])
     calorie_intake = db.execute("SELECT calorie_intake FROM users WHERE id=?", session["user_id"])
     remaining_calorie_balance = db.execute("SELECT remaining_calorie_balance FROM users WHERE id = ?", session["user_id"])
-    print("transactions=", transactions, "    calorie_intake=",calorie_intake, "    remaining_calorie_balance=", remaining_calorie_balance )
 
 
     """Show portfolio of stocks"""
@@ -55,13 +54,7 @@ def eat():
     """Eat calories"""
 
     if request.method == "GET":
-        #q = request.args.get("q")
         calories_get = db.execute("SELECT product, cal_100gr FROM calories ORDER BY product")
-        #if q:
-        #    calories_get = db.execute("SELECT * FROM calories WHERE product LIKE ?", "%" + q + "%")
-        #else:
-        #    calories_get = []
-        #print("calories_get = ", calories_get)
         return render_template("eat.html", calories_get=calories_get)
     
     if request.form.get("product")==None:
@@ -69,14 +62,9 @@ def eat():
 
     balance_old = db.execute("SELECT remaining_calorie_balance FROM users WHERE id = ?", session["user_id"])
     calories = db.execute("SELECT cal_100gr FROM calories WHERE product = ?", request.form. get("product"))
-    print("cal_gr - ", calories)
-    print("balance_old", balance_old)
-    
-    print("type_request.form.get_", type(request.form.get("grams")))
-    print("type_calories0_cal_100gr_",type(calories[0]['cal_100gr']))
+
 
     balance_new = (balance_old[0]['remaining_calorie_balance']) - int(request.form.get("grams"))*(calories[0]['cal_100gr'])/100
-    print("balance_new", balance_new)
 
     if balance_new < 0:
         return apology("Too much!", 400)
@@ -173,17 +161,12 @@ def register():
             return apology("username is already taken", 400)
         else:
             hash = generate_password_hash(request.form.get("password"))
-            #db.execute("INSERT INTO users (username, hash) VALUES(?, ?)", request.form.get("username"), hash)
             gender = request.form.get("gender")
-            print(gender)
             if gender=='Male':
                 Calorie_Intake = int(88.36 + 13.4*(int(request.form.get("Weight"))) + 4.8*(int(request.form.get("Height"))) -5.7*int((request.form.get("Age"))))
-                print("Calorie_Intake_Male", Calorie_Intake)
             else:
                 Calorie_Intake = int(447.6 + 9.2*(int(request.form.get("Weight"))) + 3.1*(int(request.form.get("Height"))) - 4.3*int((request.form.get("Age"))))
-                print("Calorie_Intake_Female", Calorie_Intake)
             db.execute("INSERT INTO users (username, hash, calorie_intake, remaining_calorie_balance) VALUES(?, ?, ?, ?)", request.form.get("username"), hash, Calorie_Intake, Calorie_Intake)
-
             return redirect("/")
 
     else:
@@ -222,8 +205,3 @@ def reset():
     db.execute("UPDATE users SET remaining_calorie_balance = calorie_intake WHERE id=?", session["user_id"])
                                                                                                  
     return redirect("/")
-    
-#cal_gr -  [{'cal_100gr': None}]
-#balance_old [{'remaining_calorie_balance': 30.39}]
-#type_request.form.get_ <class 'str'>
-#type_calories0_cal_100gr_ <class 'NoneType'>
