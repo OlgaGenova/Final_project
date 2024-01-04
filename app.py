@@ -172,12 +172,12 @@ def register():
 @app.route("/your_menu", methods=["GET", "POST"])
 @login_required
 def your_menu():
-    """Sell shares of stock"""
+    """Add product into food_calorie_chart"""
     if request.method == "GET":
         return render_template("your_menu.html")
 
     db.execute("INSERT INTO calories (product, cal_100gr) VALUES(?,?)", request.form.get("product"), int(request.form.get("cal_100gr")))
-    flash("Added!")
+    flash("Product's added!")
 
     return redirect("/")
 
@@ -187,15 +187,14 @@ def contacts():
     """If the user want to give the feedback"""
     if request.method == "GET":
         return render_template("contacts.html")
-    flash("Thanks!")
+    flash("Thanks!, I'll contact you!")
     return redirect("/")
 
 
 @app.route("/reset", methods=["POST"])
 @login_required
 def reset():
-    "Reset your eating, history of eating for start from a scratch(a new day)"
-
+    "Reset your eating, history of eating to start from a scratch(a new day)"
     db.execute("DELETE FROM transactions WHERE userid = ?", session["user_id"])
     db.execute("UPDATE users SET remaining_calorie_balance = calorie_intake WHERE id=?", session["user_id"])
                                                                                                  
