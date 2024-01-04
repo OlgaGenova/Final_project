@@ -13,20 +13,11 @@
                     <option>{{product["product"] }}</option>
                 {%endfor%}
             </select>
-           <!--<input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="product" placeholder="Product" type="text">-->
         </div>
         <div class="mb-3">
             <input autocomplete="off" autofocus class="form-control mx-auto w-auto"  min="1" name="grams" placeholder="Grams" type="number">
         </div>
         <button class="btn btn-primary" type="submit">Eat some calories</button>
     </form>
-    <!--<script>
-        let inputt = document.querySelector('input');
-        inputt.addEventListener('input', async function() {
-            let response = await fetch('/search?q=' + inputt.value);
-            let products = await response.text();
-            document.querySelector('ul').innerHTML = products;
-        });
-    </script>-->
 {% endblock %}
 
