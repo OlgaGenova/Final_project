@@ -19,34 +19,34 @@ Also it allows you to look up calorie information in a food database or even add
 1. Access the application at http://localhost:5000/.
 
 ### Files content 
-`app.py` A Python program that allowing to create dynamically web pages
-`helpers.py` Helper functions(login_required(), apology()) for the application are defined here
-`requirements.txt` That file simply prescribes the packages on which this app will depend.
-`calories.db` SQL database
-`styles.css` Styling of all the frontend.
-`food_calorie_chart` caloric content of food
-`apology.html` This file appears inc ase if: username is already taken, you haven't choosen a product or your daily calorie intake has been exceeded
-`contacts.html` For receiving a feedback
-`eat.html` Add food into your food consumption (note, how Remaining calorie balance will decrease. 
-`history.html` View the history of your consumptions
-`index.html` Landing page. The main page tracking your daily calorie consumption and remaining calorie balance.
-`layout.html` HTML layout file from which all pages are built. Contains the head of each html page and the navbar.
-`login.html` Login page. Contains the form to log in.
-`register.html` Register page. Contains the form to sign up.
-`your_menu.html` You have a possibility to add the product if it isn't in the database by entering the product and how many calories 100 grams of this item contain.
+`app.py` a python program that allowing to create dynamically web pages;  
+`helpers.py` helper functions(login_required(), apology()) for the application are defined here;  
+`requirements.txt` that file simply prescribes the packages on which this app will depend;  
+`calories.db` SQL database;  
+`styles.css` styling of all the frontend;  
+`food_calorie_chart` caloric content of food;  
+`apology.html` this file appears inc ase if: username is already taken, you haven't choosen a product or your daily calorie intake has been exceeded;  
+`contacts.html` for receiving a feedback;  
+`eat.html` add food into your food consumption (note, how Remaining calorie balance will decrease;  
+`history.html` view the history of your consumptions;  
+`index.html` landing page. The main page tracking your daily calorie consumption and remaining calorie balance;  
+`layout.html` HTML layout file from which all pages are built. Contains the head of each html page and the navbar;  
+`login.html` login page. Contains the form to log in;  
+`register.html` register page. Contains the form to sign up;  
+`your_menu.html` you have a possibility to add the product if it isn't in the database by entering the product and how many calories 100 grams of this item contain.
 
 ## SQL
 All the changes of the program happen in the file calories.db.  
 There are the main tables here.
 # users  
-`CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT NOT NULL, hash TEXT NOT NULL, calorie_intake INTEGER, remaining_calorie_balance INTEGER);`
+`CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT NOT NULL, hash TEXT NOT NULL, calorie_intake INTEGER, remaining_calorie_balance INTEGER);` 
 This table is updated upon registration: username, hash(the function for securely entering a password), calorie_intake determined according to the formula above.  
 # transactions  
 `CREATE TABLE transactions (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, userid INTEGER NOT NULL, product TEXT NOT NULL, grams INTEGER, cal_100gr REAL, time DATETIME);` 
 Data updates when a user add some food or reset the counter (by clicking on the button `Reset Start From Scratch`)when he is going to start a new day for exemple.  
 # calories  
-`CREATE TABLE calories (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, product TEXT NOT NULL, cal_100gr INTEGER);`
-The list of products with calorie content per hundred grams of productю
+`CREATE TABLE calories (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, product TEXT NOT NULL, cal_100gr INTEGER);` 
+The list of products with calorie content per hundred grams of product.
 
 ### Usage
 When registering, you must indicate your physical parameters (height, weight, age, gender) to determine the required daily calorie intake. This rate is calculated using the Harris Benedict Equation (BMR Formula).
