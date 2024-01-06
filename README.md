@@ -38,14 +38,14 @@ Also it allows you to look up calorie information in a food database or even add
 ## SQL
 All the changes of the program happen in the file calories.db.  
 There are the main tables here.
-- # users  
-`CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT NOT NULL, hash TEXT NOT NULL, calorie_intake INTEGER, remaining_calorie_balance INTEGER);` 
+- users  
+`CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username TEXT NOT NULL, hash TEXT NOT NULL, calorie_intake INTEGER, remaining_calorie_balance INTEGER);`  
 This table is updated upon registration: username, hash(the function for securely entering a password), calorie_intake determined according to the formula above.  
-- # transactions  
-`CREATE TABLE transactions (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, userid INTEGER NOT NULL, product TEXT NOT NULL, grams INTEGER, cal_100gr REAL, time DATETIME);` 
+- transactions  
+`CREATE TABLE transactions (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, userid INTEGER NOT NULL, product TEXT NOT NULL, grams INTEGER, cal_100gr REAL, time DATETIME);`  
 Data updates when a user add some food or reset the counter (by clicking on the button `Reset Start From Scratch`)when he is going to start a new day for exemple.  
-- # calories  
-`CREATE TABLE calories (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, product TEXT NOT NULL, cal_100gr INTEGER);` 
+- calories  
+`CREATE TABLE calories (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, product TEXT NOT NULL, cal_100gr INTEGER);`  
 The list of products with calorie content per hundred grams of product.
 
 ### Usage
